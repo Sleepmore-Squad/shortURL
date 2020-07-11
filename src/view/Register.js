@@ -49,21 +49,17 @@ class Register extends Component {
     //发送验证码
     handlemailtest=()=>{
         let formdata = new FormData();
-        formdata.append('code',this.state.code);
+        formdata.append('email',this.state.email);
         let opts = {
             method: "POST",
             body: formdata,
         };
         //url待定
-        fetch('http://localhost:8181/user/register',opts)
+        fetch('http://localhost:8181/user/register/send',opts)
             .then((response) => {
                 return response.json();
             })
-            // .then((data) => {
-            //     this.checkregister(data);
-            // })
-
-    }//发给后端邮箱后，是在register的时候所有数据传到后端验证
+    }
 
 
     handleCancel = () => {
@@ -73,19 +69,24 @@ class Register extends Component {
     handleRegister = () => {
         if (this.state.username==='')
         {
-            this.alert('ERROR!','Please input your username!');
+            this.alert('ERROR!','Please input  username!');
             return;
         }
         else if (this.state.password1==='')
         {
-            this.alert('ERROR!','Please input your password!');
+            this.alert('ERROR!','Please input  password!');
             return;
         }
         else if (this.state.email==='')
         {
-            this.alert('ERROR!','Please input your email!');
+            this.alert('ERROR!','Please input  email!');
             return;
-        }//先判断用户名、密码、邮箱是否为空
+        }
+        else if(this.state.code==='')
+        {
+            this.alert('ERROR!','Please input verification code!');
+            return;
+        }//先判断用户名、密码、邮箱、验证码是否为空
 
         let reEml = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
         if (reEml.test(this.state.email)===false)
@@ -99,21 +100,41 @@ class Register extends Component {
             return;
         }//再判断两次密码是否一致、邮箱是否符合规范
 
+        //验证验证码
         let formdata = new FormData();
-        formdata.append('username',this.state.username);
-        formdata.append('password',this.state.password1);
-        formdata.append('email',this.state.email);
-        formdata.append('code',this.state.code);
+        formdata.append('Email',this.state.email);
+        formdata.append('Veri-code',this.state.code);
         let opts = {
             method: "POST",
             body: formdata,
         };
-        fetch('http://localhost:8181/user/register',opts)
+        fetch('http://localhost:8181/user/register/check',opts)
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
-                this.checkregister(data);
+                if (data === 101) {
+                    this.alert('ERROR!', 'verification code is wrong!')
+                    return;
+                } else {
+                    //验证其他信息
+                    let formdata1 = new FormData();
+                    formdata1.append('username', this.state.username);
+                    formdata1.append('password', this.state.word);
+                    formdata1.append('email', this.state.email);
+                    let opts1 = {
+                        method: "POST",
+                        body: formdata1,
+                    };
+
+                    fetch('http://localhost:8181/user/register', opts1)
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            this.checkregister(data);
+                        })
+                }
             })
     };
 
