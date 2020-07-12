@@ -1,25 +1,23 @@
 import React from 'react';
 import { Router, Route, Switch, Redirect} from 'react-router-dom';
-import{history} from "./history";
+import{history} from "./utils/history";
 import Login from './view/Login';
 import Register from './view/Register';
 import Home from './view/Home';
-import Adminhome from'./Adminhome';
 import Setting from './view/Setting';
 
-class Basicrouter extends React.Component{
+class BasicRoute extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state={};
 
-        history.listen((location,action)=>
-        {
+        history.listen((location, action) => {
+            // clear alert on location change
             console.log(location,action);
-        })
+        });
     }
 
-    render() {
+    render=() =>{
         return (
             <Router history={history}>
                 <Switch>
@@ -27,7 +25,6 @@ class Basicrouter extends React.Component{
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/home" component={Home} />
-                    <Route exact path="/adminhome" component={Adminhome} />
                     <Route exact path="/setting" component={Setting} />
                     <Redirect from="/*" to="/" />
                 </Switch>
@@ -36,4 +33,4 @@ class Basicrouter extends React.Component{
     }
 }
 
-export default Basicrouter;
+export default BasicRoute;
