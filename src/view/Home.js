@@ -8,10 +8,10 @@ const {Content } = Layout;
 
 
 class Home extends React.Component{
-    // componentWillMount() {
-    //     if (sessionStorage.getItem('isAdmin') !== '1' && sessionStorage.getItem('isAdmin') !== '0')
-    //         this.props.history.replace({pathname: '/'});
-    // }
+    componentWillMount() {
+        if (sessionStorage.getItem('isAdmin') !== '1' && sessionStorage.getItem('isAdmin') !== '0')
+            this.props.history.replace({pathname: '/'});
+    }
 
     render() {
         return (
