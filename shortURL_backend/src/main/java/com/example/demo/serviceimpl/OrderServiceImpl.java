@@ -29,4 +29,9 @@ public class OrderServiceImpl implements OrderService {
     public Integer countUserDaily(Integer user_id, Date date) {
         return orderDao.CountByUserAndDate(user_id, date);
     }
+
+    @Override
+    public void insertOrder(Integer user_id, Integer url_id) {
+        orderDao.insertOrder(user_id, url_id);
+    }
 }

@@ -17,7 +17,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Orders> findByUser(Integer user_id) {
-        return orderRepository.findByUser_id(user_id);
+        return orderRepository.findByUserId(user_id);
     }
 
     @Override
@@ -27,6 +27,17 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer CountByUserAndDate(Integer user_id, Date date) {
-        return orderRepository.countByUser_idAndDate(user_id, date);
+        return orderRepository.countByUserIdAndDate(user_id, date);
+    }
+
+    @Override
+    public void insertOrder(Integer user_id, Integer url_id) {
+        Date date = new Date(System.currentTimeMillis());
+        Orders toadd = new Orders();
+        toadd.setDate(date);
+        toadd.setUrlId(url_id);
+        toadd.setUserId(user_id);
+        orderRepository.saveAndFlush(toadd);
+
     }
 }

@@ -34,7 +34,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void register(User user) {
-        userRepository.saveAndFlush(user);
+    public Integer register(User user) {
+        User user1 = userRepository.saveAndFlush(user);
+        return user1.getId();
     }
 }

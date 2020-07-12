@@ -23,10 +23,16 @@ public class UrlDaoImpl implements UrlDao {
     }
 
     @Override
-    public void insertUrl(String shortUrl, String oriUrl) {
+    public Integer insertUrl(String shortUrl, String oriUrl) {
         Url toInsert = new Url();
         toInsert.setShortURL(shortUrl);
         toInsert.setOriURL(oriUrl);
-        urlRepository.saveAndFlush(toInsert);
+        Url result = urlRepository.saveAndFlush(toInsert);
+        return result.getId();
+    }
+
+    @Override
+    public Long getCount() {
+        return urlRepository.count();
     }
 }

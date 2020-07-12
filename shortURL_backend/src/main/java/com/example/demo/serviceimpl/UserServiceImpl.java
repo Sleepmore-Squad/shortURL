@@ -1,5 +1,6 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.bean.ResultData;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
@@ -14,27 +15,38 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public Integer login(User user) {
-        User check = userDao.findOne(user.getUsername(),user.getPassword());
+    public ResultData login(String username, String password) {
+        User check = userDao.findOne(username, password);
+        ResultData resultData = new ResultData();
         if (check == null)
-            return 101;
-        if (check.getIs_admin())
-            return 401;
-        return 201;
+            resultData.setCode(101);
+        else if (check.getIs_admin()) {
+            resultData.setCode(401);
+            resultData.setData(check.getId());
+        } else {
+            resultData.setCode(201);
+            resultData.setData(check.getId());
+        }
+        return resultData;
 
     }
 
     @Override
-    public Integer register(User user) {
+    public ResultData register(User user) {
         boolean username_check = userDao.existsByUsername(user.getUsername());
         boolean email_check = userDao.existsByEmail(user.getEmail());
+        ResultData resultData = new ResultData();
         if (username_check && email_check)
-            return 111;
-        if (username_check)
-            return 110;
-        if (email_check)
-            return 101;
-        return 201;
+            resultData.setCode(111);
+        else if (username_check)
+            resultData.setCode(110);
+        else if (email_check)
+            resultData.setCode(101);
+        else {
+            resultData.setCode(201);
+            resultData.setData(userDao.register(user));
+        }
+        return resultData;
 
     }
 

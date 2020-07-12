@@ -18,7 +18,9 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/findAll")
-    public List<Orders> FindAll() { return orderService.getAllOrders();}
+    public List<Orders> FindAll() {
+        return orderService.getAllOrders();
+    }
 
     @GetMapping("/findByUser/{id}")
     public List<Orders> FindByUser(@PathVariable("id") Integer id) {

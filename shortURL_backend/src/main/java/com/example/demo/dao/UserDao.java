@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface UserDao {
     User findOne(String username, String password);
+
     List<User> findAll();
+
     Boolean existsByUsername(String username);
+
     Boolean existsByEmail(String email);
-    void register(User user);
+
+    Integer register(User user);
 }
