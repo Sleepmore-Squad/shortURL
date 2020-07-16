@@ -99,7 +99,7 @@ class Homemain extends React.Component {
                             };
                             fetch('http://localhost:8181/url/insert', opts2)
                                 .then((response) => {
-                                    return response.json();
+                                    
                                 })
                         });
 
