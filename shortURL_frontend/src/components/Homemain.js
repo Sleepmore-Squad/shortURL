@@ -38,8 +38,6 @@ class Homemain extends React.Component {
     {
         var oriurl = this.state.oriurl;
         var shorturl = this.state.shorturl;
-        console.log(oriurl);
-        console.log(this.state.oriurl);
 
         if (oriurl.substr(0, 7) !== "http://" && oriurl.substr(0, 8) !== "https://") {
             this.setState({oriurl: ""});
@@ -58,12 +56,13 @@ class Homemain extends React.Component {
         let day = d.getDate();
         let date = year + '-' + month + '-' + day;
 
-        //let formdata = new FormData();
-        //formdata.append('id', userId);//没有端口给到我user_id这里需要修改
-        //formdata.append('date', date);//没有端口给到我user_id这里需要修改
+        console.log(sessionStorage.getItem('token'))
+
         let opts = {
             method: "GET",
-            //body: formdata,
+            headers: {
+                "Authorization": sessionStorage.getItem('token')
+            }
         };
         fetch('http://localhost:8181/order/count/' + userId + '/' + date, opts)
             .then((response) => {
@@ -73,6 +72,9 @@ class Homemain extends React.Component {
                 if (data <= 9) {
                     let opts1 = {
                         method: "GET",
+                        headers: {
+                            "Authorization": sessionStorage.getItem('token')
+                        }
                     };
                     //返回最新的id
                     fetch('http://localhost:8181/url/getCount', opts1)
@@ -83,28 +85,27 @@ class Homemain extends React.Component {
                             urlid = data;
                             urlid += 1;
 
-                            //id转成62进制
-                            //shorturl = urlid.toString(62);
                             shorturl = this.string10to62(urlid);
                             this.setState({shorturl: shorturl});
 
-                            //把长短url传到后端
                             let formdata2 = new FormData();
                             formdata2.append('oriURL', oriurl);
                             formdata2.append('shortURL', shorturl);
-                            formdata2.append('user_id', userId);  //问题同上
+                            formdata2.append('user_id', userId);
                             let opts2 = {
                                 method: "POST",
                                 body: formdata2,
+                                headers: {
+                                    "Authorization": sessionStorage.getItem('token')
+                                }
                             };
                             fetch('http://localhost:8181/url/insert', opts2)
                                 .then((response) => {
-                                    return response.json();
+                                    //return response.json();
                                 })
                         });
 
                 } else if (data >= 10) {
-                    //每天申请数量达上限
                     this.alert('ERROR!', '申请数量达到上限!');
                 }
             });

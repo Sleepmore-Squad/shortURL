@@ -1,11 +1,14 @@
 import React from 'react';
-import Basicrouter from "./Router"
+import BasicRoute from "./Router"
 import './App.css';
 
-function App() {
-  return (
-   <Basicrouter/>
-  );
+class App extends React.Component {
+
+  render() {
+    return (
+        <BasicRoute/>
+    );
+  }
 }
 
 export default App;

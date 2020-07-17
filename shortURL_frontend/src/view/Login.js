@@ -61,14 +61,17 @@ class Login extends Component {
     checkuser = (data) => {
         if (data != null) {
             if (data.code === 201) {
-                sessionStorage.setItem('user', data.data);
+                sessionStorage.setItem('user', data.id);
                 sessionStorage.setItem('isAdmin', '0');
+                sessionStorage.setItem('token', data.data);
                 this.props.history.replace({pathname: '/home'});
             } else if (data.code === 401) {
-                sessionStorage.setItem('user', data.data);
+                sessionStorage.setItem('user', data.id);
                 sessionStorage.setItem('isAdmin', '1');
+                sessionStorage.setItem('token', data.data);
                 this.props.history.replace({pathname: '/adminhome'});
-            } else if (data.code === 101)
+            } else
+                //if (data.code === 101)
                 this.alert('WARNING!', 'Invalid username or password');
         }
     };
