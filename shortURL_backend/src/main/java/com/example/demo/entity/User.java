@@ -15,6 +15,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private Boolean is_admin;
     private String email;
+    private String role;
+
 }

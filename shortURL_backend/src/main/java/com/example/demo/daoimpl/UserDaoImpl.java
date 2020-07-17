@@ -38,4 +38,14 @@ public class UserDaoImpl implements UserDao {
         User user1 = userRepository.saveAndFlush(user);
         return user1.getId();
     }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Integer getId(String username) {
+        return userRepository.findByUsername(username).getId();
+    }
 }

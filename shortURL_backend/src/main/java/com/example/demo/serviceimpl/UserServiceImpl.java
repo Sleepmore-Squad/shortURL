@@ -4,6 +4,7 @@ import com.example.demo.bean.ResultData;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import com.example.demo.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,23 +14,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
-
-    @Override
-    public ResultData login(String username, String password) {
-        User check = userDao.findOne(username, password);
-        ResultData resultData = new ResultData();
-        if (check == null)
-            resultData.setCode(101);
-        else if (check.getIs_admin()) {
-            resultData.setCode(401);
-            resultData.setData(check.getId());
-        } else {
-            resultData.setCode(201);
-            resultData.setData(check.getId());
-        }
-        return resultData;
-
-    }
 
     @Override
     public ResultData register(User user) {
@@ -53,5 +37,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> showAllUser() {
         return userDao.findAll();
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public Integer getId(String username) {
+        return userDao.getId(username);
     }
 }

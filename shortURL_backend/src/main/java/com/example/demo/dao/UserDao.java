@@ -14,4 +14,8 @@ public interface UserDao {
     Boolean existsByEmail(String email);
 
     Integer register(User user);
+
+    User findByUsername(String username);
+
+    Integer getId(String username);
 }
