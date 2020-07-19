@@ -2,7 +2,7 @@ package com.example.demo.dao;
 
 
 public interface UrlDao {
-    Boolean existsByShortUrl(String shortUrl);
+    boolean existsByShortUrl(String shortUrl);
 
     String getOriUrl(String shortUrl);
 

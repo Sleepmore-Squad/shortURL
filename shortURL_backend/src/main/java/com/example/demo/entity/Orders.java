@@ -17,4 +17,12 @@ public class Orders {
     @Column(name = "url_id")
     private Integer urlId;
     private Date date;
+
+//    public Orders(Integer id, Integer userId, Integer urlId, Date date)
+//    {
+//        this.id = id;
+//        this.userId = userId;
+//        this.urlId = urlId;
+//        this.date = date;
+//    }
 }

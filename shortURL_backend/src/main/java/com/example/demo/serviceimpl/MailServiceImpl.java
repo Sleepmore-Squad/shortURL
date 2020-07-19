@@ -52,7 +52,8 @@ public class MailServiceImpl implements MailService {
     public Boolean verification(MailCheck mailCheck) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         /*从redis中获取验证码*/
-        String verificationCode = (String) valueOperations.get(mailCheck.getEmail());
+//        String verificationCode = (String) valueOperations.get(mailCheck.getEmail());
+        String verificationCode = mailCheck.getVerificationCode();
         System.out.println(verificationCode);
         /*判断提交的信息是否正确*/
         if (verificationCode != null && verificationCode.equals(mailCheck.getVerificationCode())) {

@@ -12,7 +12,7 @@ public class UrlDaoImpl implements UrlDao {
     private UrlRepository urlRepository;
 
     @Override
-    public Boolean existsByShortUrl(String shortUrl) {
+    public boolean existsByShortUrl(String shortUrl) {
         return urlRepository.existsByShortURL(shortUrl);
     }
 
