@@ -1,10 +1,9 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.bean.ResultData;
+import com.example.demo.bean.Response;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import com.example.demo.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +15,21 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public ResultData register(User user) {
+    public Response register(User user) {
         boolean username_check = userDao.existsByUsername(user.getUsername());
         boolean email_check = userDao.existsByEmail(user.getEmail());
-        ResultData resultData = new ResultData();
+        Response response = new Response();
         if (username_check && email_check)
-            resultData.setCode(111);
+            response.setCode(111);
         else if (username_check)
-            resultData.setCode(110);
+            response.setCode(110);
         else if (email_check)
-            resultData.setCode(101);
+            response.setCode(101);
         else {
-            resultData.setCode(201);
-            resultData.setData(userDao.register(user));
+            response.setCode(201);
+            userDao.register(user);
         }
-        return resultData;
+        return response;
 
     }
 

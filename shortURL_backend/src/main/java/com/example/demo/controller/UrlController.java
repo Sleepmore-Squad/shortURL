@@ -16,8 +16,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/url")
 public class UrlController {
-    private static String chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     private static final Logger LOGGER = LogManager.getLogger(UrlController.class);
 
     @Autowired
@@ -51,36 +49,5 @@ public class UrlController {
         orderService.insertOrder(user_id, url_id);
     }
 
-    //短链接跳转到原链接
-    @GetMapping("/to/{shortURL}")
-    public void Jump(@PathVariable("shortURL") String shortURL, HttpServletResponse response) throws IOException {
-        //下面注释的是将短链接shortURL转化成id再查找原链接OriURL的方法，
-        // 但是getOriURL这个函数只能用shortURL作参数，所以暂时先直接返回OriURL
-//        int len = shortURL.length();
-//
-//        //shortURL反转
-//        String tmp_str = new StringBuilder(shortURL).reverse().toString();
-//
-//        char currentBit = 'a';//当前位上的字符
-//        int currentNum = 0;//当前位上的字符对应10进制的数字大小
-//        int url_id = 0;
-//
-//        for(int i = 0; i < len; i++)
-//        {
-//            currentBit = tmp_str.charAt(i);
-//            currentNum = chars.indexOf(currentBit);
-//            url_id += currentNum * Math.pow(62, i);
-//        }
-//
-//
-//        System.out.println(id);
-//
-//        String OriURL = urlService.getOriUrl();
-//        System.out.println(OriURL);
-        String OriURL = urlService.getOriUrl(shortURL);
-        if(OriURL.equals("101"))
-            response.sendRedirect("http://www.bing.com");
-        else
-            response.sendRedirect(OriURL);
-    }
+
 }

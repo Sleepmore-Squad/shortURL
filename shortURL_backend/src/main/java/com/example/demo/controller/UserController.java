@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.bean.MailCheck;
 import com.example.demo.bean.Response;
-import com.example.demo.bean.ResultData;
 import com.example.demo.entity.User;
 import com.example.demo.exception.UnauthorizedException;
 import com.example.demo.service.MailService;
@@ -41,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResultData Register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, @RequestParam(value = "email") String email) {
+    public Response Register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, @RequestParam(value = "email") String email) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
@@ -72,6 +71,5 @@ public class UserController {
     public List<User> ShowAll() {
         return userService.showAllUser();
     }
-
 
 }

@@ -6,6 +6,8 @@ import com.example.demo.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class UrlDaoImpl implements UrlDao {
     @Autowired
@@ -20,6 +22,11 @@ public class UrlDaoImpl implements UrlDao {
     public String getOriUrl(String shortUrl) {
         Url url = urlRepository.findByShortURL(shortUrl);
         return url.getOriURL();
+    }
+
+    @Override
+    public Optional<Url> getById(Integer id) {
+        return urlRepository.findById(id);
     }
 
     @Override
