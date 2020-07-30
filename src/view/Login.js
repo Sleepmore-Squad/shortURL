@@ -8,6 +8,16 @@ import Fetch from "../fetch";
 
 class Login extends Component
 {
+    static defaultProps = {
+        login1: () => { },
+        login2: () => { },
+        login3: () => { },
+        usernameisnull:() => { },
+        passwordisnull: () => { },
+        register1: () => { },
+
+    };
+
     constructor(props)
     {
         super(props);
@@ -33,7 +43,7 @@ class Login extends Component
         this.setState({ password: e.target.value })
     };
 
-    handleSubmit = () =>
+    handleSubmit = async () =>
     {
         if (this.state.username === '')
         {
@@ -61,7 +71,8 @@ class Login extends Component
 
             };
 
-            const data = this.fetch.fetchSubmitData(opts);
+            const data = await this.fetch.fetchSubmitData(opts);
+            console.log(data);
             this.checkuser(data);
         }
 
@@ -69,38 +80,36 @@ class Login extends Component
 
     checkuser = (data) =>
     {
-        if (data != null)
+        console.log(data.code);
+        if (data.code === 201)
         {
-            if (data === 201)
-            {
-                sessionStorage.setItem('user', data.username);
-                sessionStorage.setItem('isAdmin', '0');
-                // this.props.history.replace({ pathname: '/home' });
-                //测试用可注释掉
-                this.props.login1();
-            }
-            else if (data === 401)
-            {
-                sessionStorage.setItem('user', data.username);
-                sessionStorage.setItem('isAdmin', '1');
-                // this.props.history.replace({ pathname: '/adminhome' });
-                this.props.login2();
-            }
-            else if (data === 101)
-            {
-                this.alert('WARNING!', 'Invalid username or password');
-                this.props.login3();
-            }
+            sessionStorage.setItem('user', data.id);
+            sessionStorage.setItem('isAdmin', '0');
+            sessionStorage.setItem('token', data.data);
+            this.props.history.replace({ pathname: '/home' });
+            this.props.login1();
+        }
+        else if (data.code === 401)
+        {
+            sessionStorage.setItem('user', data.id);
+            sessionStorage.setItem('isAdmin', '1');
+            this.props.history.replace({ pathname: '/adminhome' });
+            this.props.login2();
+        }
+        else
+        {
+            //if (data.code === 101)
+            this.alert('WARNING!', 'Invalid username or password');
+            this.props.login3();
         }
     };
 
 
     handleSignUp = () =>
     {
-        //测试用。平时屏蔽掉即可
+
         this.props.register1();
-        //测试时屏蔽掉
-        // this.props.history.replace({ pathname: '/register' });
+        this.props.history.replace({ pathname: '/register' });
     }
 
     alert = (mess, des) =>

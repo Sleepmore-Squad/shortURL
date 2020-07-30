@@ -12,34 +12,52 @@ export class Fetch
     let date = year + '-' + month + '-' + day;
     let opts = {
       method: "GET",
+      headers: {
+        "Authorization": sessionStorage.getItem('token')
+      }
     };
     const response = await fetch('http://localhost:8181/order/count/' + userId + '/' + date, opts);
     const data = await response.json();
+    console.log(data);
     return data;
   };
 
   fetchLatestUrlId = async () =>
   {
-    const response = await fetch("http://localhost:8181/url/getCount", { "method": "GET" });
+    let opts = {
+      method: "GET",
+      headers: {
+        "Authorization": sessionStorage.getItem('token')
+      }
+    };
+    const response = await fetch("http://localhost:8181/url/getCount",opts);
     const data = await response.json();
+    console.log(data);
     return data;
   };
 
   fetchInsertUrl = (opts) =>
   {
     fetch("http://localhost:8181/url/insert", opts);
+    // const response = await fetch("http://localhost:8181/url/insert", opts);
+    // const data = response.json();
+    // console.log(data);
+    // return data;
   };
 
   fetchSubmitData = async (opts) =>
   {
     const response = await fetch('http://localhost:8181/user/login', opts);
-    const data = response.json();
+    const data = await response.json();
+    console.log(data);
     return data;
   };
 
-  fetchEmailSend = (opts) =>
+  fetchEmailSend = async (opts) =>
   {
-    fetch('http://localhost:8181/user/register/send', opts);
+    const response = await fetch('http://localhost/user/register/send', opts);
+    const data = response.json();
+    return data;
   };
 
   fetchCheckCode = async (opts) =>

@@ -1,11 +1,10 @@
-.text
-{
+.text {
     width: 500px;
     height: 300px;
 
 }
 
-#Contain{
+.Contain {
     margin: 24px 0 0;
     position: relative;
     padding: 24px 0;
@@ -14,12 +13,12 @@
 }
 
 
-#Contain-side{
+.Contain-side {
     /*width: 15%;*/
     float: left;
 }
 
-#Contain-main {
+.Contain-main {
     /*padding: 20px 0 0 0;*/
     /*height: 1500px;*/
     /*min-width: 800px;*/
@@ -33,7 +32,7 @@
     left: -1px;
 }
 
-.example-input > span {
+.example-input>span {
     width: 200px;
     margin: 0 8px 8px 0;
 }

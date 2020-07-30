@@ -5,6 +5,10 @@ import Fetch from "../fetch";
 
 class Homemain extends React.Component
 {
+    static defaultProps = {
+        handleCount: () => { }
+    }
+
     constructor(props)
     {
         super(props);
@@ -18,11 +22,10 @@ class Homemain extends React.Component
         this.handleCount = this.handleCount.bind(this);
         this.handleInsert = this.handleInsert.bind(this);
         this.handleSendtoback = this.handleSendtoback.bind(this);
-        // this.handleDelete=this.handleDelete.bind(this);
     }
     string10to62(number)
     {
-        var chars = '0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ'.split(''),
+        var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ'.split(''),
             radix = chars.length,
             qutient = +number,
             mod = 0,
@@ -57,12 +60,12 @@ class Homemain extends React.Component
             this.handleCount();
         }
     }
-    handleCount()
+    handleCount = async () =>
     {
         //校验用户生成的数量
         let userId = sessionStorage.getItem('user');
 
-        const data = this.fetch.fetchUserDailyCount(userId);
+        const data = await this.fetch.fetchUserDailyCount(userId);
         console.log(data);
         if (data <= 9)
         {
@@ -75,16 +78,16 @@ class Homemain extends React.Component
             this.alert('ERROR!', '申请数量达到上限!');
         }
     }
-    handleInsert()
+    handleInsert = async () =>
     {
         //校验用户生成的数量
         let userId = sessionStorage.getItem('user');
-
+        console.log("fetch");
         //返回最新的id
-        const urlId = this.fetch.fetchLatestUrlId() + 1;
+        const urlId = await this.fetch.fetchLatestUrlId() + 1;
         this.handleSendtoback(urlId, userId);
     }
-    handleSendtoback(urlid, userId)
+    handleSendtoback = (urlid, userId) =>
     {
         var oriurl = this.state.oriurl;
         var shorturl = this.state.shorturl;
@@ -102,6 +105,9 @@ class Homemain extends React.Component
         let opts2 = {
             method: "POST",
             body: formdata2,
+            headers: {
+                "Authorization": sessionStorage.getItem('token')
+            }
         };
         this.fetch.fetchInsertUrl(opts2);
     }

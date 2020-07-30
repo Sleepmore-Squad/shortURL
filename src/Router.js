@@ -1,23 +1,28 @@
 import React from 'react';
-import { Router, Route, Switch, Redirect} from 'react-router-dom';
-import{history} from "./history";
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { history } from "./history";
 import Login from './view/Login';
 import Register from './view/Register';
 import Home from './view/Home';
 import Setting from './view/Setting';
 
-class BasicRoute extends React.Component{
+class BasicRoute extends React.Component
+{
 
-    constructor(props) {
+    // eslint-disable-next-line no-useless-constructor
+    constructor(props)
+    {
         super(props);
+        this.state = {};
 
-        history.listen((location, action) => {
-            // clear alert on location change
-            console.log(location,action);
-        });
+        // history.listen((location, action) =>
+        // {
+        //     console.log(location, action);
+        // })
     }
 
-    render=() =>{
+    render = () =>
+    {
         return (
             <Router history={history}>
                 <Switch>

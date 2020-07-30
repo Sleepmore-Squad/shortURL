@@ -1,20 +1,31 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
+import { withRouter } from 'react-router-dom';
 const { Sider } = Layout;
 
 class Sidermain extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handlehome = this.handlehome.bind(this);
-        this.handleset = this.handleset.bind(this);
-    }
 
-    handlehome = () => {
-        this.props.history.replace({pathname: '/home'});
+    static defaultProps = {
+        home: () => { },
+        set: () => { },
     };
 
-    handleset = () => {
+    constructor(props) {
+        super(props);
+        this.handleHome = this.handleHome.bind(this);
+        this.handleSet = this.handleSet.bind(this);
+    }
+
+    handleHome = () => {
+
+        this.props.history.push({ pathname: '/home' });
+        this.props.home();
+    };
+
+    handleSet = () => {
+
         this.props.history.replace({pathname: '/Setting'});
+        this.props.set();
     }
 
     render() {
@@ -25,9 +36,10 @@ class Sidermain extends React.Component {
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
                     style={{ height: '100%' }}
+                    className="menu"
                 >
-                    <Menu.Item key="setting:1" text-align="center" onClick={this.handleHome}>Home</Menu.Item>
-                    <Menu.Item key="setting:2" text-align="center" onClick={this.handleCart}>Set</Menu.Item>
+                    <Menu.Item className="Home" key="setting:1" text-align="center" onClick={this.handleHome}>Home</Menu.Item>
+                    <Menu.Item className="Set" key="setting:2" text-align="center" onClick={this.handleSet}>Set</Menu.Item>
 
                 </Menu>
             </Sider>
@@ -35,4 +47,4 @@ class Sidermain extends React.Component {
     }
 }
 
-export default Sidermain ;
+export default withRouter(Sidermain) ;

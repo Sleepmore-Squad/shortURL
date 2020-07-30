@@ -7,6 +7,22 @@ import Fetch from "../fetch";
 
 export default class Register extends Component
 {
+    //测试用函数
+    static defaultProps = {
+        codesend: () => { },
+        cancel: () => { },
+        codeisnull: () => { },
+        usernameisnull:() => { },
+        password1isnull: () => { },
+        emailisnull: () => { },
+        emailerror: () => { },
+        passwordnotequal: () => { },
+        UEExist: () => { },
+        UExist: () => { },
+        EExist: () => { },
+        success: () => { },
+
+    }
     constructor(props)
     {
         super(props);
@@ -30,9 +46,6 @@ export default class Register extends Component
         //检查用户名密码和email
         this.checkUPE = this.checkUPE.bind(this);
         this.alert = this.alert.bind(this);
-
-        //测试用函数
-
     }
 
     userChange(e)
@@ -75,7 +88,7 @@ export default class Register extends Component
 
     handleCancel = () =>
     {
-        if (this.props.cancel()) return;
+        this.props.cancel();
         this.props.history.replace({ pathname: '/' });
     };
 
@@ -109,11 +122,13 @@ export default class Register extends Component
         let reEml = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
         if (reEml.test(this.state.email) === false)
         {
+            this.props.emailerror();
             this.alert('ERROR!', 'Email format is wrong!')
             return;
         }
         else if (this.state.password1 !== this.state.password2)//如果两次密码不一致
         {
+            this.props.passwordnotequal();
             this.alert('ERROR!', 'Two passwords are not the same!')
             return;
         }//再判断两次密码是否一致、邮箱是否符合规范
@@ -144,7 +159,7 @@ export default class Register extends Component
     {
         let formdata1 = new FormData();
         formdata1.append('username', this.state.username);
-        formdata1.append('password', this.state.word);
+        formdata1.append('password', this.state.password1);
         formdata1.append('email', this.state.email);
         let opts1 = {
             method: "POST",
@@ -157,18 +172,29 @@ export default class Register extends Component
 
     checkregister = (data) =>
     {
-        if (data === 111)//username&email重复
-            this.alert('REGISTER FAIL!', 'Username and email already exist!')
-        else if (data === 110)//username重复
-            this.alert('REGISTER FAIL!', 'Username already exists!')
-        else if (data === 101)//email重复
-            this.alert('REGISTER FAIL!', 'Email already exists!')
+        if (data.code === 111)//username&email重复
+        {
+            this.props.UEExist();
+            this.alert('REGISTER FAIL!', 'Username and email already exist!');
+        }
+        else if (data.code === 110)//username重复
+        {
+            this.props.UExist();
+            this.alert('REGISTER FAIL!', 'Username already exists!');
+        }
+        else if (data.code === 101)//email重复
+        {
+            this.props.EExist();
+            this.alert('REGISTER FAIL!', 'Email already exists!');
+        }
         else
         {
+            this.props.success();
             sessionStorage.setItem('user', this.state.username);
             sessionStorage.setItem('isAdmin', '0');
+ //可能要改           // sessionStorage.setItem('token', data.data);
             this.alert('SUCCESS!', '')
-            // this.props.history.replace({ pathname: '/home' });
+            this.props.history.replace({ pathname: '/home' });
         }
     };
 
