@@ -3,7 +3,7 @@ package com.example.demo.util;
 import java.util.Random;
 
 public class MailUtil {
-    static public String generateCode() {
+    public static String generateCode() {
 //        Random random = new Random();
 //        char[] chars=new char[6];
 //        for (int i = 0; i < 6; i++) {
@@ -24,6 +24,5 @@ public class MailUtil {
 //        }
 //        return String.valueOf(chars);
         return "abc";
-
     }
 }

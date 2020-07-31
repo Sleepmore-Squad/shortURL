@@ -1,6 +1,6 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.bean.ResultData;
+import com.example.demo.bean.Response;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
@@ -15,43 +15,36 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public ResultData login(String username, String password) {
-        User check = userDao.findOne(username, password);
-        ResultData resultData = new ResultData();
-        if (check == null)
-            resultData.setCode(101);
-        else if (check.getIs_admin()) {
-            resultData.setCode(401);
-            resultData.setData(check.getId());
-        } else {
-            resultData.setCode(201);
-            resultData.setData(check.getId());
-        }
-        return resultData;
-
-    }
-
-    @Override
-    public ResultData register(User user) {
+    public Response register(User user) {
         boolean username_check = userDao.existsByUsername(user.getUsername());
         boolean email_check = userDao.existsByEmail(user.getEmail());
-        ResultData resultData = new ResultData();
+        Response response = new Response();
         if (username_check && email_check)
-            resultData.setCode(111);
+            response.setCode(111);
         else if (username_check)
-            resultData.setCode(110);
+            response.setCode(110);
         else if (email_check)
-            resultData.setCode(101);
+            response.setCode(101);
         else {
-            resultData.setCode(201);
-            resultData.setData(userDao.register(user));
+            response.setCode(201);
+            userDao.register(user);
         }
-        return resultData;
+        return response;
 
     }
 
     @Override
     public List<User> showAllUser() {
         return userDao.findAll();
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public Integer getId(String username) {
+        return userDao.getId(username);
     }
 }

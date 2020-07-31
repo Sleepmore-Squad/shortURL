@@ -15,11 +15,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private Boolean is_admin;
     private String email;
-
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
+    private String role;
 
 }
