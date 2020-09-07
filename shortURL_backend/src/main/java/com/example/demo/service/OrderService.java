@@ -10,6 +10,8 @@ public interface OrderService {
 
     List<Orders> getByUser(Integer user_id);
 
+    List<Orders> findAllByTime(String start, String end);
+
     Integer countUserDaily(Integer user_id, Date date);
 
     void insertOrder(Integer user_id, Integer url_id);

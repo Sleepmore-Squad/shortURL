@@ -15,4 +15,7 @@ public class Url {
     private Integer id;
     private String shortURL;
     private String oriURL;
+    private Boolean blocked;
+    private Integer vtime;
+
 }

@@ -40,4 +40,9 @@ public class OrderDaoImpl implements OrderDao {
         orderRepository.saveAndFlush(toadd);
 
     }
+
+    @Override
+    public List<Orders> findAllByTime(Date startDate, Date endDate) {
+        return orderRepository.findByDateBetween(startDate, endDate);
+    }
 }
