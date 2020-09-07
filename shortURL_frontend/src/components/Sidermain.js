@@ -5,16 +5,16 @@ const { Sider } = Layout;
 class Sidermain extends React.Component {
     constructor(props) {
         super(props);
-        this.handlehome = this.handlehome.bind(this);
-        this.handleset = this.handleset.bind(this);
+        this.handleHome = this.handleHome.bind(this);
+        this.handleSet = this.handleSet.bind(this);
     }
 
-    handlehome = () => {
+    handleHome = () => {
         this.props.history.replace({pathname: '/home'});
     };
 
-    handleset = () => {
-        this.props.history.replace({pathname: '/Setting'});
+    handleSet = () => {
+        this.props.history.replace({pathname: '/setting'});
     }
 
     render() {
@@ -27,7 +27,7 @@ class Sidermain extends React.Component {
                     style={{ height: '100%' }}
                 >
                     <Menu.Item key="setting:1" text-align="center" onClick={this.handleHome}>Home</Menu.Item>
-                    <Menu.Item key="setting:2" text-align="center" onClick={this.handleCart}>Set</Menu.Item>
+                    <Menu.Item key="setting:2" text-align="center" onClick={this.handleSet}>Set</Menu.Item>
 
                 </Menu>
             </Sider>

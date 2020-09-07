@@ -1,5 +1,4 @@
 import React from 'react';
-import 'antd/dist/antd.css';
 import '../css/home.css';
 import Homemain from'../components/Homemain';
 import  Sidermain from '../components/Sidermain';
@@ -18,7 +17,7 @@ class Home extends React.Component{
             <Content>
                 <layout className="site-layout-background" style={{ padding: '24px 0' }}>
                     <div id="Contain">
-                        <div id="Contain-side"><Sidermain histort={this.props.history}/></div>
+                        <div id="Contain-side"><Sidermain history={this.props.history}/></div>
                         <div id="Contain-main"><Homemain history={this.props.history} /></div>
                     </div>
 

@@ -137,10 +137,11 @@ class Register extends Component {
         else if (data.code === 101)//email重复
             this.alert('REGISTER FAIL!', 'Email already exists!')
         else {
-            sessionStorage.setItem('user', data.data);
-            sessionStorage.setItem('isAdmin', '0');
-            this.alert('SUCCESS!', '')
-            this.props.history.replace({pathname: '/home'});
+            // sessionStorage.setItem('user', data.id);
+            // sessionStorage.setItem('isAdmin', '0');
+            // sessionStorage.setItem('token', data.data);
+            this.alert('SUCCESS!', '');
+            this.props.history.replace({pathname: '/'});
         }
     };
 
@@ -150,7 +151,7 @@ class Register extends Component {
             description: des,
         });
         clearTimeout(2000);
-    }
+    };
 
     render() {
         return (
