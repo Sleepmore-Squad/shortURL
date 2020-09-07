@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Button, notification,} from 'antd';
+import {Input, Button, notification, Table} from 'antd';
 
 
 class Homemain extends React.Component {
@@ -11,11 +11,15 @@ class Homemain extends React.Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
+        this.getData=this.getData.bind(this);
         // this.handleDelete=this.handleDelete.bind(this);
     }
 
+    componentDidMount=()=> {
+        this.getData();
+    };
     string10to62(number) {
-        var chars = '0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ'.split(''),
+        var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
             radix = chars.length,
             qutient = +number,
             mod = 0,
@@ -38,8 +42,6 @@ class Homemain extends React.Component {
     {
         var oriurl = this.state.oriurl;
         var shorturl = this.state.shorturl;
-        console.log(oriurl);
-        console.log(this.state.oriurl);
 
         if (oriurl.substr(0, 7) !== "http://" && oriurl.substr(0, 8) !== "https://") {
             this.setState({oriurl: ""});
@@ -58,12 +60,13 @@ class Homemain extends React.Component {
         let day = d.getDate();
         let date = year + '-' + month + '-' + day;
 
-        //let formdata = new FormData();
-        //formdata.append('id', userId);//没有端口给到我user_id这里需要修改
-        //formdata.append('date', date);//没有端口给到我user_id这里需要修改
+        console.log(sessionStorage.getItem('token'))
+
         let opts = {
             method: "GET",
-            //body: formdata,
+            headers: {
+                "Authorization": sessionStorage.getItem('token')
+            }
         };
         fetch('http://localhost:8181/order/count/' + userId + '/' + date, opts)
             .then((response) => {
@@ -73,6 +76,9 @@ class Homemain extends React.Component {
                 if (data <= 9) {
                     let opts1 = {
                         method: "GET",
+                        headers: {
+                            "Authorization": sessionStorage.getItem('token')
+                        }
                     };
                     //返回最新的id
                     fetch('http://localhost:8181/url/getCount', opts1)
@@ -83,28 +89,27 @@ class Homemain extends React.Component {
                             urlid = data;
                             urlid += 1;
 
-                            //id转成62进制
-                            //shorturl = urlid.toString(62);
                             shorturl = this.string10to62(urlid);
                             this.setState({shorturl: shorturl});
 
-                            //把长短url传到后端
                             let formdata2 = new FormData();
                             formdata2.append('oriURL', oriurl);
                             formdata2.append('shortURL', shorturl);
-                            formdata2.append('user_id', userId);  //问题同上
+                            formdata2.append('user_id', userId);
                             let opts2 = {
                                 method: "POST",
                                 body: formdata2,
+                                headers: {
+                                    "Authorization": sessionStorage.getItem('token')
+                                }
                             };
                             fetch('http://localhost:8181/url/insert', opts2)
                                 .then((response) => {
-                                    return response.json();
+                                    //return response.json();
                                 })
                         });
 
                 } else if (data >= 10) {
-                    //每天申请数量达上限
                     this.alert('ERROR!', '申请数量达到上限!');
                 }
             });
@@ -120,20 +125,72 @@ class Homemain extends React.Component {
         clearTimeout(2000);
     };
 
-    // handleDelete(e)
-    // {
-    //     this.setState({oriurl:''});
-    // }
+    getData = () => {
+            let formdata = new FormData();
+            let userId = sessionStorage.getItem('user');
+            formdata.append('user_id',userId);
 
+            let opts = {
+                method: "POST",
+                body: formdata,
+                headers: {
+                    "Authorization": sessionStorage.getItem('token')
+                }
+            };
+
+            fetch('http://localhost:8181/order/findByUser', opts)
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    this.setState({data: data})
+                });
+        };
 
     render() {
+
+        const columns = [
+            {
+                title: 'Time',
+                dataIndex: 'date',
+                key:'time',
+            },
+            {
+                title: 'Original URL',
+                dataIndex: ['urlinfo','oriURL'],
+                key:'oriURL',
+            },
+            {
+                title: 'Short URL',
+                dataIndex: ['urlinfo','shortURL'],
+                key:'shortURL',
+            },
+            {
+                title: 'Visited Time',
+                dataIndex: ['urlinfo','vtime'],
+                key:'shortURL',
+            },
+            {
+                title: 'Blocked?',
+                dataIndex: ['urlinfo','block'],
+                key:'block',
+                render:(text,record) => {
+                    if (record['urlinfo']['blocked'] === false) {
+                        return <p>{'UNBLOCKED'}</p>
+                    } else {
+                        return <p>{'BLOCKED'}</p>
+                    }
+                }
+            },
+        ];
         return (
             <div>
                 <Input placeholder="请输入http://或https://" onChange={this.handleChange}/>
                 <Button onClick={this.handleCreate}>生成</Button>
                 {/*<Button onClick={this.handleDelete}>重置</Button>*/}
                 <br/>
-                <text>{"短链接：" + this.state.shorturl}</text>
+                <text>{"短链接：http://localhost:8181/to/" + this.state.shorturl}</text>
+                <Table columns={columns} dataSource={this.state.data} />
             </div>
         )
     }
